@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.9.4
+  * Bump SDK version to get bug fixes [#105](https://github.com/singer-io/tap-facebook/pull/105)
+
+## 1.9.3
+  * Bump API version from `v6` to `v8` [#103](https://github.com/singer-io/tap-facebook/pull/103)
+
+## 1.9.2
+  * Fix retry pattern for non-insights incremental streams [#100](https://github.com/singer-io/tap-facebook/pull/100)
+  * Remove workaround implemented in [#55](https://github.com/singer-io/tap-facebook/pull/55)
+
+## 1.9.1
+  * Pass metadata from the catalog to the Transformer to filter out unselected fields [#97](https://github.com/singer-io/tap-facebook/pull/97)
+
+## 1.9.0
+  * Bump API version from `v4` to `v6` [#88](https://github.com/singer-io/tap-facebook/pull/88)
+
 ## 1.8.2
   * Add `video_play_curve_actions` to ads_insights schemas [#80](https://github.com/singer-io/tap-facebook/pull/80)
 
