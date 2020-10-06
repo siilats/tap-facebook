@@ -1,5 +1,8 @@
 # Changelog
 
+## meltano.1.1.0
+  * [#5] Upgrade to Facebook Marketing API v8 by merging in v1.9.4 of https://github.com/singer-io/tap-facebook
+
 ## meltano.1.0.3
   *  [#4](https://gitlab.com/meltano/tap-facebook/issues/4) Update tap-facebook to always transmit STATE messages with all the STATES from the synced streams included. For more info check the related issue.
   *  Fix the example state on README not including the stream states under `bookmarks`
