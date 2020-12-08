@@ -1,5 +1,9 @@
 # Changelog
 
+## meltano.1.1.2
+
+* [#6](https://gitlab.com/meltano/tap-facebook/-/issues/6) Exclude deselected stream properties from `SCHEMA` messages so that no unnecessary columns/tables are created
+
 ## meltano.1.1.1
 
 * [!7](https://gitlab.com/meltano/tap-facebook/-/merge_requests/7) Upgrade `facebook_business` to `8.0.5`

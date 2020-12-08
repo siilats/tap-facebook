@@ -623,8 +623,10 @@ def do_sync(account, catalog, state):
     streams_to_sync = get_streams_to_sync(account, catalog, state)
     refs = load_shared_schema_refs()
     for stream in streams_to_sync:
-        LOGGER.info('Syncing %s, fields %s', stream.name, stream.fields())
+        fields = stream.fields()
+        LOGGER.info('Syncing %s, fields %s', stream.name, fields)
         schema = singer.resolve_schema_references(load_schema(stream), refs)
+        schema['properties'] = {k: v for k, v in schema['properties'].items() if k in fields}
         metadata_map = metadata.to_map(stream.catalog_entry.metadata)
         bookmark_key = BOOKMARK_KEYS.get(stream.name)
         singer.write_schema(stream.name, schema, stream.key_properties, bookmark_key, stream.stream_alias)
