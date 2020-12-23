@@ -1,5 +1,9 @@
 # Changelog
 
+## meltano.1.1.3
+
+* [#7](https://gitlab.com/meltano/tap-facebook/-/issues/7) Change type of `ads_insights_age_and_gender` stream `age` property from "string or integer or null" to "string or null", because "string or integer" can't be represented in most databases.
+
 ## meltano.1.1.2
 
 * [#6](https://gitlab.com/meltano/tap-facebook/-/issues/6) Exclude deselected stream properties from `SCHEMA` messages so that no unnecessary columns/tables are created

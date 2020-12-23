@@ -3,7 +3,7 @@
 from setuptools import setup
 
 setup(name='tap-facebook',
-      version='meltano.1.1.2',
+      version='meltano.1.1.3',
       description='Meltano Maintained Fork of tap_facebook - a tap for extracting data from the Facebook Ads API',
       author='Meltano and Stitch',
       url='https://singer.io',
