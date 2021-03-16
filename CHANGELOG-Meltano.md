@@ -1,5 +1,9 @@
 # Changelog
 
+## meltano.1.1.5
+
+* [#9](https://gitlab.com/meltano/tap-facebook/-/issues/9) Support integer value for `account_id` setting
+
 ## meltano.1.1.4
 
 * [#8](https://gitlab.com/meltano/tap-facebook/-/issues/8) Upgrade to Marketing API v10
