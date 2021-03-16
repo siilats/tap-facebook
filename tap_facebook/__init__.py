@@ -722,7 +722,7 @@ def do_discover():
 
 def main_impl():
     args = utils.parse_args(REQUIRED_CONFIG_KEYS)
-    account_id = args.config['account_id']
+    account_id = str(args.config['account_id'])
     access_token = args.config['access_token']
 
     CONFIG.update(args.config)
