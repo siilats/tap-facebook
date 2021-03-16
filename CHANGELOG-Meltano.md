@@ -1,5 +1,9 @@
 # Changelog
 
+## meltano.1.1.4
+
+* [#8](https://gitlab.com/meltano/tap-facebook/-/issues/8) Upgrade to Marketing API v10
+
 ## meltano.1.1.3
 
 * [#7](https://gitlab.com/meltano/tap-facebook/-/issues/7) Change type of `ads_insights_age_and_gender` stream `age` property from "string or integer or null" to "string or null", because "string or integer" can't be represented in most databases.
