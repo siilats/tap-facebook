@@ -56,6 +56,7 @@ STREAMS = [
     'ads_insights_platform_and_device',
     'ads_insights_region',
     'ads_insights_dma',
+    'ads_insights_hourly',
     #'leads',
 ]
 
@@ -74,6 +75,7 @@ BOOKMARK_KEYS = {
     'ads_insights_platform_and_device': START_DATE_KEY,
     'ads_insights_region': START_DATE_KEY,
     'ads_insights_dma': START_DATE_KEY,
+    'ads_insights_hourly': START_DATE_KEY,
     'leads': CREATED_TIME_KEY,
 }
 
@@ -569,7 +571,8 @@ class AdsInsights(Stream):
     bookmark_key = START_DATE_KEY
 
     invalid_insights_fields = ['impression_device', 'publisher_platform', 'platform_position',
-                               'age', 'gender', 'country', 'placement', 'region', 'dma']
+                               'age', 'gender', 'country', 'placement', 'region', 'dma',
+                               'hourly_stats_aggregated_by_advertiser_time_zone']
 
     # pylint: disable=no-member,unsubscriptable-object,attribute-defined-outside-init
     def __attrs_post_init__(self):
@@ -685,6 +688,8 @@ INSIGHTS_BREAKDOWNS_OPTIONS = {
                             'primary-keys': ['region']},
     'ads_insights_dma': {"breakdowns": ['dma'],
                          "primary-keys": ['dma']},
+    'ads_insights_hourly': {'breakdowns': ['hourly_stats_aggregated_by_advertiser_time_zone'],
+                            'primary-keys': ['date_start']},
 }
 
 
