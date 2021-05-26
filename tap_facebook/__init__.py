@@ -46,15 +46,15 @@ INSIGHTS_MAX_ASYNC_SLEEP_SECONDS = 5 * 60
 RESULT_RETURN_LIMIT = 100
 
 STREAMS = [
-    'adcreative',
+    #'adcreative',
     'ads',
     'adsets',
     'campaigns',
-    'ads_insights',
+    #'ads_insights',
     'ads_insights_age_and_gender',
-    'ads_insights_country',
+    #'ads_insights_country',
     'ads_insights_platform_and_device',
-    'ads_insights_region',
+    #'ads_insights_region',
     'ads_insights_dma',
     'ads_insights_hourly',
     #'leads',
@@ -194,6 +194,7 @@ class Stream(object):
                 if len(breadcrumb) != 2:
                     continue # Skip root and nested metadata
 
+                #if data.get('selected') or data.get('inclusion') == 'automatic' or data.get('inclusion') == 'available':
                 if data.get('selected') or data.get('inclusion') == 'automatic':
                     fields.add(breadcrumb[1])
         return fields
@@ -509,10 +510,10 @@ class Leads(Stream):
 ALL_ACTION_ATTRIBUTION_WINDOWS = [
     '1d_click',
     '7d_click',
-    '28d_click',
+#    '28d_click',
     '1d_view',
-    '7d_view',
-    '28d_view'
+#    '7d_view',
+#    '28d_view'
 ]
 
 ALL_ACTION_BREAKDOWNS = [
@@ -623,7 +624,7 @@ class AdsInsights(Stream):
             is_async=True)
         status = None
         time_start = time.time()
-        sleep_time = 10
+        sleep_time = 1
         while status != "Job Completed":
             duration = time.time() - time_start
             job = job.api_get()
@@ -725,10 +726,12 @@ def get_streams_to_sync(account, catalog, state):
     streams = []
     for stream in STREAMS:
         catalog_entry = next((s for s in catalog.streams if s.tap_stream_id == stream), None)
-        if catalog_entry and catalog_entry.is_selected():
+        #if catalog_entry and catalog_entry.is_selected():
+        if catalog_entry:
             # TODO: Don't need name and stream_alias since it's on catalog_entry
             name = catalog_entry.stream
             stream_alias = catalog_entry.stream_alias
+            #if name == "ads_insights_hourly" or name == "campaigns":
             streams.append(initialize_stream(account, catalog_entry, state))
     return streams
 

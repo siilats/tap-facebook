@@ -9,6 +9,8 @@ from subprocess import Popen, PIPE
 import sys
 import tempfile
 import time
+from multiprocessing import Process
+
 
 import singer
 from singer import utils
@@ -277,6 +279,7 @@ def run_tap(config_path, props_path, table, field_set_name, fields):
                 stdout=PIPE,
                 bufsize=1,
                 universal_newlines=True)
+
 
     record = None
     LOGGER.debug("Stdout reader starting")
