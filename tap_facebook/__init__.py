@@ -316,6 +316,7 @@ class Ads(IncrementalStream):
                 yield filt_ads
 
         @retry_pattern(backoff.expo, FacebookRequestError, max_tries=5, factor=5)
+        @retry_pattern(backoff.expo, ConnectionError, max_tries=5, factor=5)
         def prepare_record(ad):
             return ad.api_get(fields=self.fields()).export_all_data()
 
