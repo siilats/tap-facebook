@@ -292,50 +292,47 @@ class AdCreative(Stream):
         self.sync_batches(adcreatives)
 
 
-class Ads(IncrementalStream):
+class Ads(Stream):
     '''
     doc: https://developers.facebook.com/docs/marketing-api/reference/adgroup
     '''
 
+    def sync_batches(self, stream_objects):
+        refs = load_shared_schema_refs()
+        schema = singer.resolve_schema_references(self.catalog_entry.schema.to_dict(), refs)
+        transformer = Transformer(pre_hook=transform_date_hook)
+
+        # Create the initial batch
+        api_batch = API.new_batch()
+        batch_count = 0
+
+        # This loop syncs minimal fb objects
+        for obj in stream_objects:
+            # Execute and create a new batch for every 50 added
+            if batch_count % 50 == 0:
+                api_batch.execute()
+                api_batch = API.new_batch()
+
+            # Add a call to the batch with the full object
+            obj.api_get(fields=self.fields(),
+                        batch=api_batch,
+                        success=partial(batch_record_success, stream=self, transformer=transformer, schema=schema),
+                        failure=batch_record_failure)
+            batch_count += 1
+
+        # Ensure the final batch is executed
+        api_batch.execute()
+
     field_class = fb_ad.Ad.Field
     key_properties = ['id', 'updated_time']
 
-    @retry_pattern(backoff.expo, FacebookRequestError, max_tries=5, factor=5)
-    def _call_get_ads(self, params):
-        """
-        This is necessary because the functions that call this endpoint return
-        a generator, whose calls need decorated with a backoff.
-        """
-        return self.account.get_ads(fields=self.automatic_fields(), params=params) # pylint: disable=no-member
+    @retry_pattern(backoff.expo, (FacebookRequestError, TypeError), max_tries=5, factor=5)
+    def get_ads(self):
+        return self.account.get_ads(params={'limit': RESULT_RETURN_LIMIT})
 
-    def __iter__(self):
-        def do_request():
-            params = {'limit': RESULT_RETURN_LIMIT}
-            if self.current_bookmark:
-                params.update({'filtering': [{'field': 'ad.' + UPDATED_TIME_KEY, 'operator': 'GREATER_THAN', 'value': self.current_bookmark.int_timestamp}]})
-            yield self._call_get_ads(params)
-
-        def do_request_multiple():
-            params = {'limit': RESULT_RETURN_LIMIT}
-            bookmark_params = []
-            if self.current_bookmark:
-                bookmark_params.append({'field': 'ad.' + UPDATED_TIME_KEY, 'operator': 'GREATER_THAN', 'value': self.current_bookmark.int_timestamp})
-            for del_info_filt in iter_delivery_info_filter('ad'):
-                params.update({'filtering': [del_info_filt] + bookmark_params})
-                filt_ads = self._call_get_ads(params)
-                yield filt_ads
-
-        @retry_pattern(backoff.expo, FacebookRequestError, max_tries=5, factor=5)
-        @retry_pattern(backoff.expo, ConnectionError, max_tries=5, factor=5)
-        def prepare_record(ad):
-            return ad.api_get(fields=self.fields()).export_all_data()
-
-        if CONFIG.get('include_deleted', 'false').lower() == 'true':
-            ads = do_request_multiple()
-        else:
-            ads = do_request()
-        for message in self._iterate(ads, prepare_record):
-            yield message
+    def sync(self):
+        ads = self.get_ads()
+        self.sync_batches(ads)
 
 
 class AdSets(IncrementalStream):
@@ -718,7 +715,7 @@ def initialize_stream(account, catalog_entry, state): # pylint: disable=too-many
     elif name == 'adsets':
         return AdSets(name, account, stream_alias, catalog_entry, state=state)
     elif name == 'ads':
-        return Ads(name, account, stream_alias, catalog_entry, state=state)
+        return Ads(name, account, stream_alias, catalog_entry)
     elif name == 'adcreative':
         return AdCreative(name, account, stream_alias, catalog_entry)
     elif name == 'leads':
@@ -760,7 +757,7 @@ def do_sync(account, catalog, state):
 
 
         # NB: The AdCreative stream is not an iterator
-        if stream.name in {'adcreative', 'leads'}:
+        if stream.name in {'adcreative', 'leads', 'ads'}:
             stream.sync()
             continue
 
