@@ -106,13 +106,23 @@ def iter_delivery_info_filter(stream_type):
     }
 
     filt_values = [
-        "active", "archived", "completed",
-        "limited", "not_delivering", "deleted",
-        "not_published", "pending_review", "permanently_deleted",
-        "recently_completed", "recently_rejected", "rejected",
-        "scheduled", "inactive"]
+        "active",
+        # "archived",
+        "completed",
+        "limited",
+        "not_delivering",
+        # "deleted",
+        "not_published",
+        "pending_review",
+        "permanently_deleted",
+        "recently_completed",
+        "recently_rejected",
+        "rejected",
+        "scheduled",
+        "inactive"
+    ]
 
-    sub_list_length = 3
+    sub_list_length = 1
     for i in range(0, len(filt_values), sub_list_length):
         filt['value'] = filt_values[i:i+sub_list_length]
         yield filt
