@@ -365,10 +365,7 @@ class AdSets(IncrementalStream):
         def prepare_record(ad_set):
             return ad_set.api_get(fields=self.fields()).export_all_data()
 
-        if CONFIG.get('include_deleted', 'false').lower() == 'true':
-            ad_sets = do_request_multiple()
-        else:
-            ad_sets = do_request()
+        ad_sets = do_request_multiple()
 
         for message in self._iterate(ad_sets, prepare_record):
             yield message
@@ -417,10 +414,7 @@ class Campaigns(IncrementalStream):
                     campaign_out['ads']['data'].append({'id': ad_id})
             return campaign_out
 
-        if CONFIG.get('include_deleted', 'false').lower() == 'true':
-            campaigns = do_request_multiple()
-        else:
-            campaigns = do_request()
+        campaigns = do_request_multiple()
 
         for message in self._iterate(campaigns, prepare_record):
             yield message
