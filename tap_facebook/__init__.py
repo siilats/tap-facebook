@@ -698,7 +698,7 @@ INSIGHTS_BREAKDOWNS_OPTIONS = {
     'ads_insights_dma': {"breakdowns": ['dma'],
                          "primary-keys": ['dma']},
     'ads_insights_hourly': {'breakdowns': ['hourly_stats_aggregated_by_advertiser_time_zone'],
-                            'primary-keys': ['date_start']},
+                            'primary-keys': ['hourly_stats_aggregated_by_advertiser_time_zone']},
 }
 
 
