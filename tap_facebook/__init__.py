@@ -46,18 +46,18 @@ INSIGHTS_MAX_ASYNC_SLEEP_SECONDS = 5 * 60
 RESULT_RETURN_LIMIT = 100
 
 STREAMS = [
-    #'adcreative',
+    'adcreative',
     'ads',
     'adsets',
     'campaigns',
-    #'ads_insights',
+    'ads_insights',
     'ads_insights_age_and_gender',
-    #'ads_insights_country',
+    'ads_insights_country',
     'ads_insights_platform_and_device',
-    #'ads_insights_region',
+    'ads_insights_region',
     'ads_insights_dma',
     'ads_insights_hourly',
-    #'leads',
+    'leads',
 ]
 
 REQUIRED_CONFIG_KEYS = ['start_date', 'account_id', 'access_token']
