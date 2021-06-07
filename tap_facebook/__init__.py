@@ -283,7 +283,7 @@ class AdCreative(Stream):
     field_class = adcreative.AdCreative.Field
     key_properties = ['id']
 
-    @retry_pattern(backoff.expo, (FacebookRequestError, TypeError), max_tries=10, factor=5)
+    @retry_pattern(backoff.expo, (FacebookRequestError, TypeError), max_tries=20, factor=5)
     def get_adcreatives(self):
         return self.account.get_ad_creatives(params={'limit': RESULT_RETURN_LIMIT})
 
@@ -326,7 +326,7 @@ class Ads(Stream):
     field_class = fb_ad.Ad.Field
     key_properties = ['id', 'updated_time']
 
-    @retry_pattern(backoff.expo, (FacebookRequestError, TypeError), max_tries=10, factor=5)
+    @retry_pattern(backoff.expo, (FacebookRequestError, TypeError), max_tries=20, factor=5)
     def get_ads(self):
         return self.account.get_ads(params={'limit': RESULT_RETURN_LIMIT})
 
@@ -343,7 +343,7 @@ class AdSets(IncrementalStream):
     field_class = adset.AdSet.Field
     key_properties = ['id', 'updated_time']
 
-    @retry_pattern(backoff.expo, FacebookRequestError, max_tries=10, factor=5)
+    @retry_pattern(backoff.expo, FacebookRequestError, max_tries=20, factor=5)
     def _call_get_ad_sets(self, params):
         """
         This is necessary because the functions that call this endpoint return
@@ -368,7 +368,7 @@ class AdSets(IncrementalStream):
                 filt_adsets = self._call_get_ad_sets(params)
                 yield filt_adsets
 
-        @retry_pattern(backoff.expo, FacebookRequestError, max_tries=10, factor=5)
+        @retry_pattern(backoff.expo, FacebookRequestError, max_tries=20, factor=5)
         def prepare_record(ad_set):
             return ad_set.api_get(fields=self.fields()).export_all_data()
 
@@ -382,7 +382,7 @@ class Campaigns(IncrementalStream):
     field_class = fb_campaign.Campaign.Field
     key_properties = ['id']
 
-    @retry_pattern(backoff.expo, FacebookRequestError, max_tries=10, factor=5)
+    @retry_pattern(backoff.expo, FacebookRequestError, max_tries=20, factor=5)
     def _call_get_campaigns(self, params):
         """
         This is necessary because the functions that call this endpoint return
@@ -411,7 +411,7 @@ class Campaigns(IncrementalStream):
                 filt_campaigns = self._call_get_campaigns(params)
                 yield filt_campaigns
 
-        @retry_pattern(backoff.expo, FacebookRequestError, max_tries=10, factor=5)
+        @retry_pattern(backoff.expo, FacebookRequestError, max_tries=20, factor=5)
         def prepare_record(campaign):
             campaign_out = campaign.api_get(fields=fields).export_all_data()
             if pull_ads:
@@ -477,12 +477,12 @@ class Leads(Stream):
         api_batch.execute()
         return str(pendulum.parse(latest_lead[self.replication_key]))
 
-    @retry_pattern(backoff.expo, FacebookRequestError, max_tries=10, factor=5)
+    @retry_pattern(backoff.expo, FacebookRequestError, max_tries=20, factor=5)
     def get_ads(self):
         params = {'limit': RESULT_RETURN_LIMIT}
         yield from self.account.get_ads(params=params)
 
-    @retry_pattern(backoff.expo, FacebookRequestError, max_tries=10, factor=5)
+    @retry_pattern(backoff.expo, FacebookRequestError, max_tries=20, factor=5)
     def get_leads(self, ads, start_time, previous_start_time):
         start_time = int(start_time.timestamp()) # Get unix timestamp
         params = {'limit': RESULT_RETURN_LIMIT,
@@ -618,7 +618,7 @@ class AdsInsights(Stream):
             }
             buffered_start_date = buffered_start_date.add(days=1)
 
-    @retry_pattern(backoff.expo, (FacebookRequestError, InsightsJobTimeout, FacebookBadObjectError, TypeError), max_tries=10, factor=5)
+    @retry_pattern(backoff.expo, (FacebookRequestError, InsightsJobTimeout, FacebookBadObjectError, TypeError), max_tries=20, factor=5)
     def run_job(self, params):
         LOGGER.info('Starting adsinsights job with params %s', params)
         job = self.account.get_insights( # pylint: disable=no-member
