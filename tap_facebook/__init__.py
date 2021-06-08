@@ -271,10 +271,11 @@ class AdCreative(Stream):
                 api_batch = API.new_batch()
 
             # Add a call to the batch with the full object
-            obj.api_get(fields=self.fields(),
-                        batch=api_batch,
-                        success=partial(batch_record_success, stream=self, transformer=transformer, schema=schema),
-                        failure=batch_record_failure)
+            self._retryable_api_get(obj,
+                                    self.fields(),
+                                    api_batch,
+                                    partial(batch_record_success, stream=self, transformer=transformer, schema=schema),
+                                    batch_record_failure)
             batch_count += 1
 
         # Ensure the final batch is executed
@@ -290,6 +291,13 @@ class AdCreative(Stream):
     def sync(self):
         adcreatives = self.get_adcreatives()
         self.sync_batches(adcreatives)
+
+    @retry_pattern(backoff.expo, (FacebookRequestError, TypeError), max_tries=20, factor=5)
+    def _retryable_api_get(self, obj, fields, api_batch, success, failure):
+        obj.api_get(fields=fields,
+                    batch=api_batch,
+                    success=success,
+                    failure=failure)
 
 
 class Ads(Stream):
@@ -314,10 +322,11 @@ class Ads(Stream):
                 api_batch = API.new_batch()
 
             # Add a call to the batch with the full object
-            obj.api_get(fields=self.fields(),
-                        batch=api_batch,
-                        success=partial(batch_record_success, stream=self, transformer=transformer, schema=schema),
-                        failure=batch_record_failure)
+            self._retryable_api_get(obj,
+                                    self.fields(),
+                                    api_batch,
+                                    partial(batch_record_success, stream=self, transformer=transformer, schema=schema),
+                                    batch_record_failure)
             batch_count += 1
 
         # Ensure the final batch is executed
@@ -333,6 +342,13 @@ class Ads(Stream):
     def sync(self):
         ads = self.get_ads()
         self.sync_batches(ads)
+
+    @retry_pattern(backoff.expo, (FacebookRequestError, TypeError), max_tries=20, factor=5)
+    def _retryable_api_get(self, obj, fields, api_batch, success, failure):
+        obj.api_get(fields=fields,
+                    batch=api_batch,
+                    success=success,
+                    failure=failure)
 
 
 class AdSets(IncrementalStream):
