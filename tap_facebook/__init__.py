@@ -46,10 +46,10 @@ INSIGHTS_MAX_ASYNC_SLEEP_SECONDS = 2 * 60
 RESULT_RETURN_LIMIT = 100
 
 STREAMS = [
-    'adcreative',
-    'ads',
-    'adsets',
-    'campaigns',
+   # 'adcreative',
+   # 'ads',
+   # 'adsets',
+   # 'campaigns',
     'ads_insights',
     'ads_insights_age_and_gender',
     'ads_insights_country',
