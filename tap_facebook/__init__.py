@@ -626,6 +626,7 @@ class AdsInsights(Stream):
                 'action_breakdowns': list(self.action_breakdowns),
                 'breakdowns': list(self.breakdowns),
                 'limit': self.limit,
+                'filtering': '[{field:"ad.impressions",operator:"GREATER_THAN",value:0}]',
                 'fields': list(self.fields().difference(self.invalid_insights_fields)),
                 'time_increment': self.time_increment,
                 'action_attribution_windows': list(self.action_attribution_windows),
