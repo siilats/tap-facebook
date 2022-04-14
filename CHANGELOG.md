@@ -1,12 +1,40 @@
 # Changelog
 
-# 1.12.1
+## 1.18.2
+  * Implemented Request Timeout [#173](https://github.com/singer-io/tap-facebook/pull/173)
+
+## 1.18.1
+  * Forced Replication Method implemented for couple of streams and replication keys [167](https://github.com/singer-io/tap-facebook/pull/167)
+  * Added Tap-tester test cases [168](https://github.com/singer-io/tap-facebook/pull/168)
+  * Updated schema file of ads_insights_age_and_gender and ads_insights_hourly_advertiser and added "format": "date-time" [#172](https://github.com/singer-io/tap-facebook/pull/172)
+
+## 1.17.0
+  * Added retry to AdsInsights job polling to resolve race-condition errors [#174](https://github.com/singer-io/tap-facebook/pull/174)
+
+## 1.16.0
+  * Bump tap dependency, `facebook_business`, from `10.0.0` to `12.0.0` [#164](https://github.com/singer-io/tap-facebook/pull/164)
+
+## 1.15.1
+  * Bump tap dependency, `attrs`, from `16.3.0` to `17.3.0` [#161](https://github.com/singer-io/tap-facebook/pull/161)
+
+## 1.15.0
+  * Add `country` to `ad_insights_country`'s composite primary key [#154](https://github.com/singer-io/tap-facebook/pull/154)
+
+## 1.14.0
+  * Add an Ads Insight Stream, broken down by `hourly_stats_aggregated_by_advertiser_time_zone` [#151](https://github.com/singer-io/tap-facebook/pull/151)
+
+## 1.13.0
+  * Bump API version from `v9` to `v10` [#146](https://github.com/singer-io/tap-facebook/pull/146)
+  * Add feature for AdsInsights stream: The tap will shift the start date to 37 months ago in order to fetch data from this API
+    * More info [here](https://www.facebook.com/business/help/1695754927158071?id=354406972049255)
+
+## 1.12.1
   * Increased insights job timeout to 300 seconds [#148](https://github.com/singer-io/tap-facebook/pull/148)
 
-# 1.12.0
+## 1.12.0
   * Added leads stream [#143](https://github.com/singer-io/tap-facebook/pull/143)
 
-# 1.11.2
+## 1.11.2
   * Added unique_outbound_clicks to several streams [#138](https://github.com/singer-io/tap-facebook/pull/138)
 
 ## 1.11.1

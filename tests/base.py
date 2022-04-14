@@ -96,8 +96,8 @@ class FacebookBaseTest(unittest.TestCase):
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS: {"date_start"}
             },
-            "ads_insights_country": {  # TODO | add country | https://stitchdata.atlassian.net/browse/SRCE-2555
-                self.PRIMARY_KEYS: {"campaign_id", "adset_id", "ad_id", "date_start"}, # , "country"},
+            "ads_insights_country": {
+                self.PRIMARY_KEYS: {"campaign_id", "adset_id", "ad_id", "date_start", "country"},
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS: {"date_start"}
             },
@@ -116,6 +116,11 @@ class FacebookBaseTest(unittest.TestCase):
             },
             "ads_insights_dma": {
                 self.PRIMARY_KEYS: {"dma", "campaign_id", "adset_id", "ad_id", "date_start"},
+                self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS: {"date_start"}
+            },
+            "ads_insights_hourly_advertiser": {
+                self.PRIMARY_KEYS: {"hourly_stats_aggregated_by_advertiser_time_zone", "campaign_id", "adset_id", "ad_id", "date_start"},
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS: {"date_start"}
             },
